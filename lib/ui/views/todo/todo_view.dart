@@ -4,10 +4,7 @@ import 'package:todo_app/model/todo_model.dart';
 import 'package:todo_app/ui/views/todo/todo_viewmodel.dart';
 
 class TodoView extends StatelessWidget {
-  final TextEditingController _titleController = TextEditingController();
-  final TextEditingController _subtitleController = TextEditingController();
-
-  TodoView({super.key});
+  const TodoView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -28,23 +25,30 @@ class TodoView extends StatelessWidget {
                       itemBuilder: (context, index) {
                         final TodoModel task = model.tasks[index];
                         return ListTile(
-                          title: Text(
-                            task.title,
-                            style: TextStyle(
-                              decoration: task.completed
-                                  ? TextDecoration.lineThrough
-                                  : TextDecoration.none,
+                            title: Text(
+                              task.title,
+                              style: const TextStyle(
+                                decoration: TextDecoration.none,
+                              ),
                             ),
-                          ),
-                          subtitle: Text(task.subtitle),
-                          trailing: Checkbox(
-                            value: task.completed,
-                            onChanged: (value) {
-                              model.updateTodoStatus(task, value!);
-                            },
-                          ),
-                          onLongPress: () => model.deleteTodo(task),
-                        );
+                            subtitle: Text(task.subtitle),
+                            trailing: SizedBox(
+                              width: 100,
+                              child: Row(
+                                children: [
+                                  IconButton(
+                                      onPressed: () {
+                                        model.updateTodoStatus(task, true);
+                                      },
+                                      icon: const Icon(Icons.edit)),
+                                  IconButton(
+                                      onPressed: () {
+                                        model.deleteTodo(task);
+                                      },
+                                      icon: const Icon(Icons.delete)),
+                                ],
+                              ),
+                            ));
                       },
                     ),
                   ),
@@ -53,13 +57,13 @@ class TodoView extends StatelessWidget {
                     child: Column(
                       children: <Widget>[
                         TextField(
-                          controller: _titleController,
+                          controller: model.titleController,
                           decoration: const InputDecoration(
                             hintText: 'Enter a new task title',
                           ),
                         ),
                         TextField(
-                          controller: _subtitleController,
+                          controller: model.subtitleController,
                           decoration: const InputDecoration(
                             hintText: 'Enter a new task subtitle',
                           ),
@@ -67,15 +71,29 @@ class TodoView extends StatelessWidget {
                         const SizedBox(height: 10),
                         ElevatedButton(
                           onPressed: () {
-                            if (_titleController.text.isNotEmpty &&
-                                _subtitleController.text.isNotEmpty) {
-                              model.addTodo(_titleController.text,
-                                  _subtitleController.text);
-                              _titleController.clear();
-                              _subtitleController.clear();
+                            if (model.isEdit ?? false) {
+                              if (model.titleController.text.isNotEmpty &&
+                                  model.subtitleController.text.isNotEmpty) {
+                                model.editTodo(TodoModel(
+                                    completed: false,
+                                    uuid: model.taskValue?.uuid ?? '',
+                                    title: model.titleController.text,
+                                    subtitle: model.subtitleController.text));
+                                model.titleController.clear();
+                                model.subtitleController.clear();
+                              }
+                            } else {
+                              if (model.titleController.text.isNotEmpty &&
+                                  model.subtitleController.text.isNotEmpty) {
+                                model.addTodo(model.titleController.text,
+                                    model.subtitleController.text);
+                                model.titleController.clear();
+                                model.subtitleController.clear();
+                              }
                             }
                           },
-                          child: const Text('Add Todo'),
+                          child: Text(
+                              model.isEdit ?? false ? 'Edit Todo' : 'Add Todo'),
                         ),
                       ],
                     ),

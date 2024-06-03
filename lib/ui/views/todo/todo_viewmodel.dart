@@ -1,14 +1,19 @@
+import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:get_it/get_it.dart';
 import 'package:todo_app/model/todo_model.dart';
 import 'package:todo_app/services/todo_service.dart';
+import 'package:uuid/uuid.dart';
 
 class TodoViewModel extends BaseViewModel {
   final TodoService _taskService = GetIt.instance<TodoService>();
 
   List<TodoModel> _tasks = [];
   List<TodoModel> get tasks => _tasks;
-
+  TodoModel? taskValue;
+  final TextEditingController titleController = TextEditingController();
+  final TextEditingController subtitleController = TextEditingController();
+  bool? isEdit;
   Future<void> fetchTodos() async {
     setBusy(true);
     _tasks = await _taskService.getAllTodos();
@@ -17,13 +22,16 @@ class TodoViewModel extends BaseViewModel {
   }
 
   void addTodo(String title, String subtitle) {
-    _taskService.addTodo(TodoModel(title: title, subtitle: subtitle));
+    _taskService.addTodo(
+        TodoModel(title: title, subtitle: subtitle, uuid: const Uuid().v4()));
     fetchTodos();
   }
 
   void updateTodoStatus(TodoModel task, bool completed) {
-    _taskService.editTodo(task.copyWith(completed: completed));
-    fetchTodos();
+    titleController.text = task.title;
+    subtitleController.text = task.subtitle;
+    isEdit = completed;
+    taskValue = task;
   }
 
   void deleteTodo(TodoModel task) {
@@ -33,6 +41,7 @@ class TodoViewModel extends BaseViewModel {
 
   void editTodo(TodoModel updatedTask) {
     _taskService.editTodo(updatedTask);
+    isEdit = false;
     fetchTodos();
   }
 }

@@ -1,10 +1,7 @@
 import 'package:todo_app/model/todo_model.dart';
 
 class TodoService {
-  final List<TodoModel> _tasks = [
-    const TodoModel(title: 'Seed 1', subtitle: 'Just a seeder'),
-    const TodoModel(title: 'Seed 2', subtitle: 'Just a seeder'),
-  ];
+  final List<TodoModel> _tasks = [];
 
   Future<List<TodoModel>> getAllTodos() async {
     await Future.delayed(const Duration(milliseconds: 500));
@@ -20,8 +17,7 @@ class TodoService {
   }
 
   void editTodo(TodoModel task) {
-    int index = _tasks.indexWhere(
-        (t) => t.title == task.title && t.subtitle == task.subtitle);
+    int index = _tasks.indexWhere((t) => t.uuid == task.uuid);
     if (index != -1) {
       _tasks[index] = task;
     }
