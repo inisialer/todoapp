@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
+import 'package:stacked_services/stacked_services.dart';
+import 'package:todo_app/app/app.router.dart';
 import 'package:todo_app/ui/common/app_colors.dart';
 import 'package:todo_app/ui/common/ui_helpers.dart';
 
@@ -49,7 +51,12 @@ class HomeView extends StackedView<HomeViewModel> {
                   children: [
                     MaterialButton(
                       color: kcDarkGreyColor,
-                      onPressed: viewModel.showDialog,
+                      onPressed: () {
+                        NavigationService()
+                            .pushNamedAndRemoveUntil(Routes.todoView);
+                      },
+
+                      // viewModel.showDialog,
                       child: const Text(
                         'Show Dialog',
                         style: TextStyle(

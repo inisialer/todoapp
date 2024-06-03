@@ -4,8 +4,8 @@ import 'package:todo_app/ui/views/home/home_view.dart';
 import 'package:todo_app/ui/views/startup/startup_view.dart';
 import 'package:stacked/stacked_annotations.dart';
 import 'package:stacked_services/stacked_services.dart';
-import 'package:todo_app/ui/views/todo/todo_view.dart';
 import 'package:todo_app/services/todo_service.dart';
+import 'package:todo_app/ui/views/todo/todo_view.dart';
 // @stacked-import
 
 @StackedApp(
