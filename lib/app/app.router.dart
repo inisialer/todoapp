@@ -11,13 +11,16 @@ import 'package:stacked/stacked.dart' as _i1;
 import 'package:stacked_services/stacked_services.dart' as _i5;
 import 'package:todo_app/ui/views/home/home_view.dart' as _i2;
 import 'package:todo_app/ui/views/startup/startup_view.dart' as _i3;
+import 'package:todo_app/ui/views/todo/todo_view.dart' as _i4;
 
 class Routes {
   static const homeView = '/home-view';
+  static const todoView = '/todo-view';
 
   static const startupView = '/startup-view';
 
   static const all = <String>{
+    todoView,
     homeView,
     startupView,
   };
@@ -33,18 +36,28 @@ class StackedRouter extends _i1.RouterBase {
       Routes.startupView,
       page: _i3.StartupView,
     ),
+    _i1.RouteDef(
+      Routes.todoView,
+      page: _i4.TodoView,
+    ),
   ];
 
   final _pagesMap = <Type, _i1.StackedRouteFactory>{
     _i2.HomeView: (data) {
       return _i4.MaterialPageRoute<dynamic>(
-        builder: (context) => const _i2.HomeView(),
+        builder: (context) => _i2.HomeView(),
         settings: data,
       );
     },
     _i3.StartupView: (data) {
       return _i4.MaterialPageRoute<dynamic>(
         builder: (context) => const _i3.StartupView(),
+        settings: data,
+      );
+    },
+    _i4.TodoView: (data) {
+      return _i4.MaterialPageRoute<dynamic>(
+        builder: (context) => _i4.TodoView(),
         settings: data,
       );
     },
