@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
-import 'package:get_it/get_it.dart';
+import 'package:todo_app/app/app.locator.dart';
 import 'package:todo_app/model/todo_model.dart';
 import 'package:todo_app/services/todo_service.dart';
 import 'package:uuid/uuid.dart';
 
-class TodoViewModel extends BaseViewModel {
-  final TodoService _taskService = GetIt.instance<TodoService>();
+class TodoViewModel extends ReactiveViewModel {
+  final TodoService _taskService = locator<TodoService>();
 
   List<TodoModel> _tasks = [];
   List<TodoModel> get tasks => _tasks;
@@ -44,4 +44,7 @@ class TodoViewModel extends BaseViewModel {
     isEdit = false;
     fetchTodos();
   }
+
+  @override
+  List<ListenableServiceMixin> get listenableServices => [_taskService];
 }

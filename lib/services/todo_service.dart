@@ -1,7 +1,12 @@
+import 'package:stacked/stacked.dart';
 import 'package:todo_app/model/todo_model.dart';
 
-class TodoService {
+class TodoService with ListenableServiceMixin {
+  TodoService() {
+    listenToReactiveValues([_tasks]);
+  }
   final List<TodoModel> _tasks = [];
+  List<TodoModel> get tasks => _tasks;
 
   Future<List<TodoModel>> getAllTodos() async {
     await Future.delayed(const Duration(milliseconds: 500));
