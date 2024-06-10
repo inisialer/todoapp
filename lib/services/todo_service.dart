@@ -15,10 +15,12 @@ class TodoService with ListenableServiceMixin {
 
   void addTodo(TodoModel task) {
     _tasks.add(task);
+    notifyListeners();
   }
 
   void removeTodo(TodoModel task) {
     _tasks.remove(task);
+    notifyListeners();
   }
 
   void editTodo(TodoModel task) {
@@ -26,5 +28,6 @@ class TodoService with ListenableServiceMixin {
     if (index != -1) {
       _tasks[index] = task;
     }
+    notifyListeners();
   }
 }
